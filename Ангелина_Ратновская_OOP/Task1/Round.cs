@@ -1,65 +1,55 @@
 ﻿using System;
 
-namespace Task1
+namespace Tasks
 {
    public class Round
     {
-        private double radius, x, y;
+        private double _radius;
 
         public Round(double x, double y, double radius)
-        {            
-            this.x = Math.Abs(x);
-            this.y = Math.Abs(y);
-            this.radius = Math.Abs(radius);
+        {           
+            if (IsValid(radius))
+            {
+                X = x;
+                Y = y;
+                _radius = radius;
+            }
         }
 
         public double Radius
         {
             get
             {
-                return radius;
+                return _radius;
             }
             set
             {
-                radius = Math.Abs(value);
+                if (IsValid(value))
+                {
+                    _radius = value;
+                }              
             }
         }
-        public double X
+        public double X { get; set; }
+
+       public double Y { get; set; }
+
+        // Валидация радиуса круга.
+       private static bool IsValid(double r)
         {
-            get
+            
+            if (r >= 0)
             {
-                return x;
+                return true;
             }
-            set
+            else
             {
-                x = Math.Abs(value);
-            }
-        }
-        public double Y
-        {
-            get
-            {
-                return y;
-            }
-            set
-            {
-                y = Math.Abs(value);
+                throw new ArgumentException("Радиус должен быть >=0!");
             }
         }
 
-        public double Lenght
-        {
-            get
-            {
-                return 2 * Math.PI * radius;
-            }
-        }
-        public double Area
-        {
-            get
-            {
-                return Math.PI * Math.Pow(radius, 2);
-            }
-        }
+        public double Lenght => 2 * Math.PI * _radius;
+
+       public double Area => Math.PI * Math.Pow(_radius, 2);
     }
 }

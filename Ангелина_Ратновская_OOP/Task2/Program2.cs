@@ -1,76 +1,82 @@
 ﻿using System;
 
-namespace Task1
+namespace Tasks
 {
     class Program
     {       
-       
         static Triangle GetTriangleFromConsole()
         {
-            Console.WriteLine("Введите длину стороны \"а\" треугольника:");
-            double a = double.Parse(Console.ReadLine());
+            double a = Program1.GetValue("Введите длину стороны \"а\" треугольника:");
+            double b = Program1.GetValue("Введите длину стороны \"b\" треугольника:");
+            double c = Program1.GetValue("Введите длину стороны \"c\" треугольника:");
 
-            Console.WriteLine("Введите длину стороны \"b\" треугольника:");
-            double b = double.Parse(Console.ReadLine());
-
-            Console.WriteLine("Введите длину стороны \"c\" треугольника:");
-            double c = double.Parse(Console.ReadLine());
-
-            Triangle triangle = new Triangle(a, b, c);
-
-            return triangle;
-        }
-
-
-        static void Main()
-        {
-            Triangle triangle = null;
             try
             {
-
-                while (triangle == null)
+                Triangle triangle = new Triangle(a, b, c);
+                return triangle;
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("Каждая сторона треугольника должна быть меньше суммы двух других его сторон и больше нуля!");
+                return GetTriangleFromConsole();
+            }
+            
+        }
+     
+        static void SetTriangleParametrs(string i, Triangle triangle)
+        {
+            try
+            {
+                switch (i)
                 {
-                    triangle = GetTriangleFromConsole();
+                    case "1":
+                        triangle.A = Program1.GetValue("Введите новое значение для a");
+                        break;
+
+                    case "2":
+                        triangle.B = Program1.GetValue("Введите новое значение для b");
+                        break;
+
+                    case "3":
+                        triangle.C = Program1.GetValue("Введите новое значение для c");
+                        break;
                 }
             }
             catch (ArgumentException)
             {
-                Console.WriteLine("Каждая сторона треугольника должна быть меньше суммы двух других его сторон!");
-                GetTriangleFromConsole();
+                Console.WriteLine("Каждая сторона треугольника должна быть меньше суммы двух других его сторон и больше нуля!");
+                SetTriangleParametrs(i,triangle);
             }
-            var i = "";
+        }
+
+        static void ShowTriangleData(Triangle triangle)
+        {
+            Console.WriteLine("Длина сторон треугольника - {0}, {1}, {2}", triangle.A, triangle.B, triangle.C);
+            Console.WriteLine("Площадь треугольника = {0}", triangle.GetArea());
+            Console.WriteLine("Периметр треугольника = {0}", triangle.GetPerimeter());
+            Console.WriteLine("Если необходимо изменить сторону \"a\" - нажмите 1, если сторону \"b\" - 2, если \"c\" - 3, для выхода нажмите 4");
+
+        }
+
+        static void Main()
+        {
+            Triangle triangle = null;
+
+            while (triangle == null)
+            {                   
+                 triangle = GetTriangleFromConsole();                                   
+            }
+   
+                string i;
 
                 do
-                {
-
-                    Console.WriteLine("Длина сторон треугольника - {0}, {1}, {2}", triangle.A, triangle.B, triangle.C);
-                    Console.WriteLine("Площадь треугольника = {0}", triangle.Area);
-                    Console.WriteLine("Периметр треугольника = {0}", triangle.Perimeter);
-                    Console.WriteLine("Если вы хотите поменять длину стороны a - нажмите 1, если стороны b - 2, если c - 3, для выхода нажмите 4");
-
+                {               
+                    ShowTriangleData(triangle);
                     i = Console.ReadLine();
-                    switch (i)
-                    {
-                        case "1":
-                            Console.WriteLine("Введите новое значение для a");
-                            triangle.A = double.Parse(Console.ReadLine());
-                            break;
-                        case "2":
-                            Console.WriteLine("Введите новое значение для b");
-                            triangle.B = double.Parse(Console.ReadLine());
-                            break;
-                        case "3":
-                            Console.WriteLine("Введите новое значение для b");
-                            triangle.C = double.Parse(Console.ReadLine());
-                            break;
-                    }
-
-
+                    SetTriangleParametrs(i, triangle);
                 }
                 while (i != "4");
-            
-            
-           
-    }
+            }
+        }
 }
-    }
+    

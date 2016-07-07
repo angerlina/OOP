@@ -1,78 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task1
+﻿using  System;
+namespace Tasks
 {
+    
     public class Triangle
     {
-        private double a, b, c;
         
+        private double _a, _b, _c;
         public Triangle(double a, double b, double c)
-        {
-            if (a < b + c && b < a + c && c < a + b)
+        {    
+            if (IsValid(a, b, c))
             {
-                this.a = Math.Abs(a);
-                this.b = Math.Abs(b);
-                this.c = Math.Abs(c);
-            }
-
-            else
-            {
-                throw new System.ArgumentException("Каждая сторона треугольника должна быть меньше суммы двух других его сторон");
-            }
-
+                _a = a;
+                _b = b;
+                _c = c;
+            }                            
         }
-
+        
         public double A
         {
             get
             {
-                return a;
+                return _a;
             }
             set
             {
-                a = Math.Abs(value);
+                if (IsValid(value, _b, _c))
+              {
+                    _a = value;
+              }           
             }
         }
         public double B
         {
             get
             {
-                return b;
+                return _b;
             }
             set
-            {
-                b = Math.Abs(value);
+            {                
+                if (IsValid(_a, value, _c))
+                {
+                    _b = value;
+                }
             }
         }
         public double C
         {
             get
             {
-                return c;
+                return _c;
             }
             set
             {
-                c = Math.Abs(value);
+                if (IsValid(_a, _b, value))
+                {
+                    _c = value;
+                }
             }
         }
-
-        public double Perimeter
+        bool IsValid(double a, double b, double c)
         {
-            get
+            if ((a < b + c) && (b < a + c) && (c < a + b) && (a > 0) && (b > 0) && (c > 0))
             {
-                return a + b + c;
+                return true;
+            }
+            else
+            {
+                throw new System.ArgumentException("Каждая сторона треугольника должна быть меньше суммы двух других его сторон и больше 0");
             }
         }
-        public double Area
+        public double GetArea()
         {
-            get
-            {
-                return ((a + b + c) / 2) * (((a + b + c) / 2) - a) * (((a + b + c) / 2) - b) * (((a + b + c) / 2 - c));
-            }
+            
+            double p = (_a + _b + _c) / 2;
+            return Math.Sqrt((p * (p - _a)*(p - _b)*(p - _c)));
         }
-    }
+        public double GetPerimeter()
+        {                       
+            return _a + _b + _c;            
+        }   
+     }
 }
